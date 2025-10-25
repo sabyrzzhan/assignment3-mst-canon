@@ -1,0 +1,160 @@
+Assignment 3 — Minimum Spanning Tree (MST)
+📘 Project Description
+
+This project implements and compares two classical algorithms for constructing the Minimum Spanning Tree (MST) of a connected, weighted graph:
+
+Prim’s algorithm
+
+Kruskal’s algorithm
+
+Both algorithms are written in Java without using any external graph libraries.
+The goal is to analyze their performance on graphs of different sizes and densities, and to evaluate the number of operations, execution time, and resulting total MST cost.
+
+🧩 Code Overview
+1. Graph.java
+
+Defines the basic graph structure:
+
+n — number of vertices
+
+edges — list of all edges
+
+adj — adjacency list for Prim’s algorithm
+
+Each edge is represented by an Edge object containing:
+
+int u, v, w; // endpoints and weight
+
+2. GraphGenerator.java
+
+Generates connected random graphs using the following steps:
+
+First builds a spanning tree to ensure connectivity.
+
+Then adds random edges until reaching the target number of edges.
+
+Edge weights are random integers between 1 and 100.
+
+3. MSTPrim.java
+
+Implementation of Prim’s algorithm using:
+
+A priority queue (PriorityQueue<int[]>) for selecting the smallest edge.
+
+Metrics object for counting operations:
+
+comparisons, pushes, pops.
+
+Returns:
+
+MSTResult(edges, totalCost)
+
+4. MSTKruskal.java
+
+Implementation of Kruskal’s algorithm using:
+
+Edge sorting by weight.
+
+Union–Find (Disjoint Set) data structure with path compression and union by rank.
+
+Counts metrics for comparisons, unions, and path compressions.
+
+Returns the same MST result format as Prim’s algorithm.
+
+5. Metrics.java
+
+Records the number of key operations performed by each algorithm:
+
+comparisons, pushes, pops, unions, pathComp;
+
+
+and computes the total count via:
+
+operationsCount()
+
+6. Results.java
+
+Contains data classes:
+
+MSTResult — stores MST edges and total cost.
+
+ResultRecord — combines all information for one graph (Prim + Kruskal results and metrics).
+
+7. JsonIO.java
+
+Handles JSON export:
+
+Converts generated graphs to ass_3_input.json.
+
+Writes MST results and metrics to ass_3_output.json.
+
+Both files follow a clear hierarchical structure:
+
+{
+  "results": [
+    {
+      "graph_id": 1,
+      "input_stats": { "vertices": 15, "edges": 40 },
+      "prim": { "total_cost": 264, "operations_count": 932, "execution_time_ms": 0.42 },
+      "kruskal": { "total_cost": 264, "operations_count": 1020, "execution_time_ms": 0.37 }
+    }
+  ]
+}
+
+8. TestRunner.java
+
+Runs internal validation for all generated graphs:
+
+Ensures Prim and Kruskal give equal MST cost.
+
+Verifies |MST| = V − 1.
+
+Prints total passed/failed checks.
+
+9. MSTTests.java
+
+JUnit test suite that checks:
+
+Correctness on a manual small graph.
+
+Equality of Prim and Kruskal on multiple random graphs.
+
+Performance on large graphs.
+
+Handling of disconnected cases.
+
+10. Main.java
+
+The main class controlling the entire experiment:
+
+Generates graphs of 4 categories:
+
+small, medium, large, extra.
+
+Runs Prim and Kruskal on each graph.
+
+Collects results in ass_3_output.json.
+
+Saves metrics to results_summary.csv.
+
+Triggers TestRunner for verification.
+
+📊 Output Summary
+File	Description
+ass_3_input.json	Graphs generated for analysis
+ass_3_output.json	Results of both MST algorithms
+results_summary.csv	Numerical comparison table (cost, ops, time)
+🧠 Key Insights
+
+Prim’s algorithm performs better on dense graphs due to adjacency lists and priority queues.
+
+Kruskal’s algorithm is faster on sparse graphs because of efficient edge sorting and union–find structure.
+
+For all connected graphs, MST total costs are identical.
+
+Execution time and operation counts differ depending on graph density.
+
+✨ Conclusion
+
+This project demonstrates practical differences between Prim’s and Kruskal’s algorithms in terms of computational efficiency and implementation structure.
+Both algorithms produce the same MST result, but the efficiency trade-off depends on graph size and edge density.
